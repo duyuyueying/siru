@@ -1,0 +1,91 @@
+<template>
+	<view class="detail_wrap">
+		<view class="head_wrap space_between flex_row">
+			<view class="flex2 space_between">
+				<text class="bold_txt" :style="{color: theme != null ? theme.txt : '#fff'}">&yen;5431.78</text>
+				<text class="sm_txt" :style="{color: theme != null ? theme.txt : '#fff'}">=5431.78</text>
+				<text class="sm_txt" :style="{color: theme != null ? theme.txt : '#fff'}">-5431.78%</text>
+			</view>
+			<view class="flex1">
+				<text class="sm_txt">24h最高价    11111</text>
+				<text class="sm_txt">24h最低价    11111</text>
+				<text class="sm_txt">24h成交量    11111</text>
+			</view>
+		</view>
+		<tabs :tabs="['报价','简介']" @changeTab="changeTab" :defaultTab="currTab"></tabs>
+		<view class="wrap" v-if="currTab == 0">
+			<uni-self-dish-table-head></uni-self-dish-table-head>
+			<uni-self-dish-table-cell v-for="(item, index) in coins" :key="index" :item="item"></uni-self-dish-table-cell>
+		</view>
+		<view class="profile_wrap" v-if="currTab == 1">
+			<text class="desc_txt">比特币（英语：Bitcoin，缩写：BTC或XBT）是一种基于去中心化，采用点对点网路与共识主动性，开放原始码，以区块链作为底层技术的加密货币，比特币由中本聪（Satoshi Nakamoto）于2008年10月31日发表论文，
+			2009年1月3日，创世区块诞生。在某些国家则将比特币视为虚拟商品，并非货币。</text>
+			<text class="desc_txt"> 流通总量   222222亿</text>
+			<text class="desc_txt"> 发行总量   222222亿</text>
+			<text class="desc_txt"> 发行时间   222222亿</text>
+		</view>
+	</view>
+</template>
+
+<script>
+	import {color} from '@/common/util.js';
+	import tabs from '@/components/tabs.vue';
+	import uniSelfDishTableHead from '@/pages/quotations/uni-self-dish-table-head.vue';
+	import uniSelfDishTableCell from '@/pages/quotations/uni-self-dish-table-cell.vue';
+	import {coins} from '@/mock/data.js';
+	export default {
+		data() {
+			return {
+				symbol: '',
+				theme: null,
+				currTab: 0,
+				coins: coins
+			};
+		},
+		components:{
+			tabs,
+			uniSelfDishTableHead,
+			uniSelfDishTableCell
+		},
+		mixins:[color],
+		onLoad(query){
+			uni.setNavigationBarTitle({
+				title: query.symbol+'/USDT('+(query.exChangeName == '' ? '全球均价' : query.exChangeName)+')'
+			});
+			this.theme = this.color(2,1);
+		},
+		methods:{
+			changeTab(index){
+				this.currTab = index;
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	.head_wrap{
+		background-color: #131e31;
+		padding: $space-base $space-lg;
+	}
+	.space_between{
+		justify-content: space-between;
+	}
+	.bold_txt{
+		font-size: 42upx;
+		color: #fff;
+		font-weight: 600;
+	}
+	.sm_txt{
+		font-size: 24upx;
+		color: #fff;
+		line-height: 52upx;
+	}
+	.desc_txt{
+		font-size: 26upx;
+		color: #959595;
+		line-height: 40upx;
+	}
+	.profile_wrap{
+		padding: 0 $space-lg;
+	}
+</style>

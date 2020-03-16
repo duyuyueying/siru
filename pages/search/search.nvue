@@ -1,0 +1,250 @@
+<template>
+	<view class="container home_container">
+		<uni-nav-bar statusBar leftText="none" rightText="none">
+			<uni-search-bar placeholder="PAYDEX" cancelText='取消' bgColor="#f5f5f5" cancelButton="always" @confirm="confirm" @input="inputFun" @cancel="goBack"></uni-search-bar>
+		</uni-nav-bar>
+		<view v-if="showInit">
+			<scroll-view scroll-y="true">
+				<view>
+					<uni-title title="搜索历史" size="34" height="90" v-if="historyList.length > 0">
+						<view class="m-head_left" :style="{height:'90upx'}" @tap="clearAllHistory" ><text class="m-head_left_text">全部清除</text></view>
+					</uni-title>
+					<view class="u-wrap">
+						<view class="spacing-row-sm tag_item" v-for="(item, index) in historyList" :key="index">
+							<uni-tag :text="item" rightBtn></uni-tag>
+						</view>
+					</view>
+					<uni-title title="今日热词" size="34" height="90">
+					</uni-title>
+					<view class="u-wrap">
+						<view class="spacing-row-sm tag_item" v-for="(item, index) in hotList" :key="index">
+							<uni-tag :text="item" :type="index !=0 ?'default': 'selected'"></uni-tag>
+						</view>
+					</view>
+					<uni-title title="热门直播" size="34" height="90">
+						<view class="m-head_left" :style="{height:'90upx'}" @tap="gotoLiveList" ><text class="m-head_left_text">查看全部</text></view>
+					</uni-title>
+					<view class="import_news_list_wrapper">
+						<news-item :newsItem="item" @click="goDetail(item)" v-for="(item, index) in listData" :key="index"></news-item>
+					</view>
+				</view>
+			</scroll-view>
+			
+		</view>
+		<view v-else style="flex:1">
+			<view class="m-navbar_wrap"><navbar :navbar="searchTabList" @changeTab="switchTab" @init="initData">
+				<swiper-item class="swiper-item" v-for="(page, index) in searchTabList" :key="index">
+					<search-list-page class="page-item" :nid="page.id" :pageName="page.name" :code:="page.enCode" ref="page" v-if="index != 0"></search-list-page>
+					<search-first-list-page class="page-item" :nid="page.id" :pageName="page.name" :code:="page.enCode" ref="page" v-else></search-first-list-page>
+				</swiper-item>
+			</navbar></view>
+			<!-- <swiper class="tab-box" ref="swiper1" :current="tabIndex" :duration="300" @change="onswiperchange" @transition="onswiperscroll"
+			 @animationfinish="animationfinish">
+					
+			</swiper> -->
+		</view>
+		
+	</view>
+</template>
+
+<script>
+	import {mapState, mapMutations} from 'vuex'; 
+	import {uniNavBar,uniIcons,uniSearchBar, } from '@dcloudio/uni-ui';
+	import uniTitle from '@/components/uni-title.vue';
+	import uniTag from '@/components/uni-tag.vue';
+	import {newItem, searchTab} from '../../mock/data';
+	import newsItem from '@/pages/home/news-item.nvue';
+	import searchListPage from '@/pages/search/search-list-page.nvue';
+	import searchFirstListPage from '@/pages/search/search-first-list-page.nvue';
+	import navbar from '@/components/navbar.vue';
+	// 缓存每页最多
+	const MAX_CACHE_DATA = 100;
+	// 缓存页签数量
+	const MAX_CACHE_PAGE = 3;
+	export default {
+		data() {
+			return {
+				historyList: ['BT','BTC','王晓宇','BT','BTC','王晓宇','BT','BTC','王晓宇'],
+				hotList: ['BT','BTC','王晓宇','BT','BTC','王晓宇','BT','BTC','王晓宇'],
+				listData: [],
+				keyWord: '',
+				showInit: true, // 展示默认页面
+				searchTabList: [],
+				tabList: [], // tabList数据
+				scrollLeft: 0, // 选中的tab需要偏移的位置
+				cacheTab: [],// 缓存3列tab，优化体验
+				isTap: false, // 防止重复触
+			}
+		},
+		components:{
+			uniNavBar,
+			uniSearchBar,
+			uniTitle,
+			uniTag,
+			newsItem,
+			searchListPage,
+			searchFirstListPage,
+			navbar
+		},
+		onLoad() {
+			this.listData = newItem;
+			this.searchTabList = searchTab;
+		},
+		onReady() {
+		},
+		methods: {
+			...mapMutations(['TAB_INDEX']),
+			// 清除搜索历史
+			clearAllHistory() {
+				this.historyList = [];
+			},
+			// 直播列表页面
+			gotoLiveList(){
+				uni.navigateTo({
+					url: '../livelist/livelist'
+				})
+			},
+			confirm(e) {
+				if(e.value != ''){
+					this.showInit = false;
+				}
+			},
+			inputFun(e){
+				console.log('change====');
+				if(!this.showInit && e.value == ''){
+					this.showInit = true
+				}
+			},
+			// 请求tab数据|
+			async initData() {
+				// 用来缓存前一个tab的index
+				this.prevIndex = 0;
+				this.pageList = this.$refs.page;
+				this.switchTab(this.prevIndex);
+			},
+				
+			// 加载pagelist的第一页数据，并将index的tab设置为当前选中的tab，对缓存的tab做相应的操作
+			switchTab(index) {
+				if (this.pageList[index].dataList.length === 0) {
+					this.loadTabData(index);
+				}
+				if (this.tabIndex === index) {
+					return;
+				}
+				// 缓存 tabId
+				if (this.pageList[this.tabIndex].dataList.length > MAX_CACHE_DATA) {
+					let isExist = this.cacheTab.indexOf(this.tabIndex);
+					if (isExist < 0) {
+						this.cacheTab.push(this.tabIndex);
+					}
+				}
+				this.TAB_INDEX(index);
+				// #ifdef APP-NVUE
+				// this.scrollTabTo(index);
+				// #endif
+				// #ifndef APP-NVUE
+				// this.scrollInto = this.tabList[index].id;
+				// #endif
+				// 释放 tabId
+				if (this.cacheTab.length > MAX_CACHE_PAGE) {
+					let cacheIndex = this.cacheTab[0];
+					this.clearTabData(cacheIndex);
+					this.cacheTab.splice(0, 1);
+				}
+			},
+			
+			// 调用组件newsPage的loadData方法
+			loadTabData(index) {
+				this.pageList[index].loadData();
+			},
+			clearTabData(index) {
+				this.pageList[index].clear();
+			},
+			// 跳转到搜索页面
+			gotoSearchPage() {
+				uni.navigateTo({
+					url: '../search/search'
+				})
+			},
+			// 返回上一页
+			goBack(){
+				uni.navigateBack()
+			}
+		},
+			
+		computed:{
+			...mapState(['tabIndex']),
+			showResult(){
+				console.log(this.keyWord);
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	/* #ifndef APP-PLUS */
+	page {
+		width: 100%;
+		min-height: 100%;
+		display: flex;
+		flex-direction: column;
+	}
+	/* #endif */
+	.home_container{
+		display: flex;
+		flex:1;
+		flex-direction: column;
+	}
+	.input_search{
+		background-color: $bgColor;
+		border-radius: 6upx;
+		height: 60upx;
+		padding: 0upx 20upx;
+		flex: 1;
+		align-items: center;
+		flex-direction: row;
+		margin-left: 30upx;
+	}
+	.input_search_txt {
+		color: $whiteTextColor;
+		font-size: 20upx;
+		margin-left: 10upx;
+	}
+	.u-wrap{
+		@include flex-center(row, flex-start,$flex-wrap: wrap);
+		margin-bottom: $space-sm;
+		background-color: $whiteColor;
+	}
+	.tag_item{
+		margin-bottom: $space-sm;
+	}
+	.tab-box {
+		flex: 1;
+	}
+	.swiper-item {
+		flex: 1;
+		flex-direction: column;
+	}
+	.page-item {
+		flex: 1;
+		flex-direction: row;
+		position: absolute;
+		left: 0;
+		top: 0;
+		right: 0;
+		bottom: 0;
+	}
+	.m-navbar_wrap{
+		margin-bottom: $space-base;
+		background-color: #fff;
+		flex: 1;
+	}
+	.m-head_left{
+		width: 150upx;
+		@include flex-center($justify:flex-end);
+		
+	}
+	.m-head_left_text{
+		@include txt;
+	}
+</style>

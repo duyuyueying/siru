@@ -1,0 +1,59 @@
+<template>
+	<view>
+		<view class="list" v-for="(list,list_i) in severList" :key="list_i">
+			<uni-title :title="list.name" :isBold="false" :height="120" @click="onClick(list.nikeName)">
+				<view @tap="toPage(list.nikeName)"><text class="u-link_txt">1/7</text></view>
+			</uni-title>
+		</view>
+	</view>
+	
+</template>
+
+<script>
+	import uniTitle from '@/components/uni-title.vue';
+	export default {
+		data() {
+			return {
+				severList:[
+					{name:'实名认证',icon:'point.png',nikeName: 'authentication'},
+					{name:'账号与安全',icon:'quan.png',nikeName: 'account'},
+					{name:'行情&预警',icon:'momey.png',nikeName: 'setting'},
+					{name:'推送管理',icon:'point.png',nikeName: 'pushNotification'},
+					{name:'清除缓存',icon:'point.png',nikeName: 'clearCache'},
+					
+					{name:'给APP好评',icon:'point.png',nikeName: 'commet'},
+					{name:'退出登录',icon:'point.png',nikeName: 'loginout'},
+				],
+			}
+		},
+		components:{
+			uniTitle
+		},
+		methods: {
+			//用户点击列表项
+			toPage(type){
+				let url = '';
+				switch(type){
+					case 'authentication':
+						url = '/pages/authentication/authentication';
+						break;
+					case 'account':
+						url='/pages/accountSafe/accountSafe';
+					
+				}
+				uni.navigateTo({
+					url
+				});
+			},
+			onClick(type) {
+				this.toPage(type);
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+.list{
+	@include sideBorder;
+}
+</style>

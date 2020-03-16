@@ -1,0 +1,178 @@
+<template>
+	<view class="home_container">
+		<!-- header -->
+		<view class="bg-white header">
+			<view class="flex-sub radius">思如科技</view>
+			<view class="flex-twice radius">
+				<view class="input_search" @click="gotoSearchPage">
+					<text class="input_search_txt">搜索你关注的内容</text>
+					<text class="input_search_txt">搜索</text>
+				</view>
+			</view>
+		</view>
+		<view class="tabs">
+			<navbar :navbar="tabList" @changeTab="switchTab" :defaultIndex="1" @init="initData">
+				<swiper-item class="swiper-item" v-for="(page, index) in tabList" :key="index">
+					<newsPage class="page-item" :nid="page.newsid" :pageName="page.name" ref="page"></newsPage>
+				</swiper-item>
+			</navbar>
+		</view>
+	</view>
+</template>
+
+<script>
+	import {mapState, mapMutations} from 'vuex';
+	// #ifdef APP-PLUS
+	const dom = weex.requireModule('dom');
+	// #endif
+	import newsPage from './news-page.nvue';
+	import navbar from '@/components/navbar.vue';
+	import {homeTab} from '../../mock/data';
+
+	// 缓存每页最多
+	const MAX_CACHE_DATA = 100;
+	// 缓存页签数量
+	const MAX_CACHE_PAGE = 3;
+	
+
+	export default {
+		components: {
+			newsPage,
+			navbar
+		},
+		data() {
+			return {
+				tabList: [], // tabList数据
+				cacheTab: [],// 缓存3列tab，优化体验
+			}
+		},
+		onLoad() {
+			this.getTab();
+		},
+		methods: {
+			// 得到tab
+			async getTab() {
+				this.tabList = homeTab;
+			},
+			// 请求tab数据|
+			async initData() {
+				// 用来缓存前一个tab的index
+				this.prevIndex = 0;
+				this.pageList = this.$refs.page;
+				this.switchTab(this.prevIndex);
+			},
+
+			// 加载pagelist的第一页数据，并将index的tab设置为当前选中的tab，对缓存的tab做相应的操作
+			switchTab(index) {
+				if (this.pageList[index].dataList.length === 0) {
+					this.loadTabData(index);
+				}
+				// 缓存 tabId
+				if (this.pageList[this.prevIndex].dataList.length > MAX_CACHE_DATA) {
+					let isExist = this.cacheTab.indexOf(this.prevIndex);
+					if (isExist < 0) {
+						this.cacheTab.push(this.tabIndex);
+					}
+				}
+				this.prevIndex = index;
+				// 释放 tabId
+				if (this.cacheTab.length > MAX_CACHE_PAGE) {
+					let cacheIndex = this.cacheTab[0];
+					this.clearTabData(cacheIndex);
+					this.cacheTab.splice(0, 1);
+				}
+			},
+			
+			// 调用组件newsPage的loadData方法
+			loadTabData(index) {
+				this.pageList[index].loadData();
+			},
+			clearTabData(index) {
+				this.pageList[index].clear();
+			},
+			// 跳转到搜索页面
+			gotoSearchPage() {
+				uni.navigateTo({
+					url: '../search/search'
+				})
+			},
+		}
+	}
+</script>
+
+<style lang="scss">
+	@import '../../common/common.scss';
+	/* #ifndef APP-PLUS */
+	page {
+		width: 100%;
+		min-height: 100%;
+		display: flex;
+		flex-direction: column;
+	}
+	/* #endif */
+
+	.tabs {
+		flex: 1;
+		flex-direction: column;
+		overflow: hidden;
+		background-color: #ffffff;
+		/* #ifdef MP-ALIPAY || MP-BAIDU */
+		height: 100vh;
+		/* #endif */
+	}
+	.tab-box {
+		flex: 1;
+	}
+	.swiper-item {
+		flex: 1;
+		flex-direction: column;
+	}
+	.page-item {
+		flex: 1;
+		flex-direction: row;
+		position: absolute;
+		left: 0;
+		top: 0;
+		right: 0;
+		bottom: 0;
+	}
+	.home_container{
+		display: flex;
+		flex:1;
+		flex-direction: column;
+	}
+	.header{
+		height: 85upx;
+		padding: 10upx 15upx;
+		display: flex;
+		align-items: center;
+		width: 750upx;
+		background-color:#fff;
+		flex-direction: row;
+		justify-content: space-between;
+	}
+	.flex-sub{
+		flex: 1;
+	}
+	.flex-twice{
+		flex: 2;
+	}
+	.input_search{
+		background-color: #f5f5f5;
+		border-radius: 6upx;
+		height: 55upx;
+		padding: 0upx 20upx;
+		justify-content: space-between;
+		display: flex;
+		align-items: center;
+		flex-direction: row;
+	}
+	.input_search_txt {
+		color: #999;
+		font-size: 20upx
+	}
+	
+	.cuIcon-hotfill{
+		color: $mainColor;
+	}
+</style>

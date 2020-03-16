@@ -1,0 +1,337 @@
+{
+	"pages": [
+		{
+		    "path" : "pages/home/home",
+		    "style" : {
+				"app-plus": {
+					"titleNView": {
+						"titleText": "思如科技",
+						"titleSize": "14px",
+						"searchInput": {
+							"backgroundColor": "rgba(231, 231, 231,.7)",
+							"borderRadius": "16px",
+							"placeholder": "搜索你关注的内容",
+							"disabled": true,
+							"placeholderColor": "#606266"
+						}
+					}
+				}
+			}
+		},{
+			"path": "pages/news/index",
+			"style": {
+				"navigationBarBackgroundColor": "#fafafa",
+				"navigationBarTextStyle": "black",
+				"app-plus": {
+					"titleNView": {
+						"titleText": "快讯"
+					}
+				}
+			}
+		},
+		{
+			"path": "pages/detail/detail",
+			"style": {
+				"app-plus": {
+					"titleNView": {
+						"backButton": {
+							"type": "back",
+							"color": "#3333"
+						},
+						"titleText": "思如科技"
+					}
+				}
+			}
+		},
+		{
+			"path": "pages/detail/fastNewsDetail",
+			"style": {
+				"app-plus": {
+					"titleNView": {
+						"backButton": {
+							"type": "back"
+						},
+						"titleText": "思如科技",
+						"buttons":[{
+							"fontSrc": "/static/yticon.ttf",
+							"text": "\ue744",
+							"fontSize": "27",
+							"color": "#303133"
+						}]
+					}
+				}
+			}
+		},
+		{
+		    "path" : "pages/detail/liveDetail",
+		    "style" : {
+				"app-plus": {
+					"titleNView": {
+						"backButton": {
+							"type": "back"
+						},
+						"titleText": "思如科技"
+					}
+				}
+			}
+		}
+        ,{
+            "path" : "pages/user/user",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/quotations/quotations",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/home/home",
+            "style" : {
+				"app-plus": {
+					"titleNView": {
+						"type": "transparent",
+						"searchInput": {
+							"backgroundColor": "rgba(231, 231, 231,.7)",
+							"borderRadius": "16px",
+							"placeholder": "请输入地址 如：大钟寺",
+							"disabled": true,
+							"placeholderColor": "#606266"
+						},
+						"buttons": [{
+								"fontSrc": "/static/yticon.ttf",
+								"text": "\ue60d",
+								"fontSize": "26",
+								"color": "#303133",
+								"float": "left",
+								"background": "rgba(0,0,0,0)"
+							},
+							{
+								"fontSrc": "/static/yticon.ttf",
+								"text": "\ue744",
+								"fontSize": "27",
+								"color": "#303133",
+								"background": "rgba(0,0,0,0)",
+								"redDot": true
+							}
+						]
+					}
+				}
+			}
+        }
+        ,{
+            "path" : "pages/search/search",
+            "style" : {
+				"navigationStyle": "custom"
+			}
+        }
+        ,{
+            "path" : "pages/author/author",
+            "style" : {
+				"app-plus": {
+					"titleNView": {
+						"type": "transparent",
+						"backButton": {
+							"type": "back"
+						},
+						"titleText": "思如科技"
+					}
+				}
+			}
+        }
+        ,{
+            "path" : "pages/tagPage/tagPage",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/comment/comment",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/livelist/livelist",
+            "style" : {
+				"app-plus": {
+					"titleNView": {
+						"backButton": {
+							"type": "back"
+						},
+						"titleText": "直播"
+					}
+				}
+			}
+        }
+        ,{
+            "path" : "pages/invite/invite",
+            "style" : {
+				"app-plus": {
+					"titleNView": {
+						"backButton": {
+							"type": "back"
+						},
+						"titleText": "邀请好友"
+					}
+				}
+			}
+        }
+        ,{
+            "path" : "pages/userCenterList/userCenterList",
+            "style" : {
+				"app-plus": {
+					"titleNView": {
+						"backButton": {
+							"type": "back"
+						}
+					}
+				}
+			}
+        }
+        ,{
+            "path" : "pages/messageCenter/messageCenter",
+            "style" : {
+				"app-plus": {
+					"titleNView": {
+						"backButton": {
+							"type": "back"
+						},
+						"titleText": "消息中心"
+					}
+				}
+			}
+        }
+        ,{
+            "path" : "pages/taskCenter/taskCenter",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/authentication/authentication",
+            "style" : {
+				"navigationBarBackgroundColor": "#FFFFFF",
+				"navigationBarTextStyle": "black",
+				"titleNView": {
+					"backButton": {
+						"type": "back"
+					},
+					"titleText": "实名认证"
+				}
+			}
+        }
+        ,{
+            "path" : "pages/authenticationInput/authenticationInput",
+            "style" : {
+				"navigationBarBackgroundColor": "#FFFFFF",
+				"navigationBarTextStyle": "black",
+				"titleNView": {
+					"backButton": {
+						"type": "back"
+					},
+					"titleText": "认证"
+				}
+			}
+        }
+        ,{
+            "path" : "pages/policy/policy",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/reply/reply",
+            "style" : {
+				"navigationBarBackgroundColor": "#FFFFFF",
+				"navigationBarTextStyle": "black",
+				"titleNView": {
+					"backButton": {
+						"type": "back"
+					},
+					"titleText": "回复"
+				}
+			}
+        }
+        ,{
+            "path" : "pages/setting/setting",
+            "style" : {
+				"navigationBarBackgroundColor": "#FFFFFF",
+				"navigationBarTextStyle": "black",
+				"titleNView": {
+					"backButton": {
+						"type": "back"
+					},
+					"titleText": "我的设置"
+				}}
+        }
+        ,{
+            "path" : "pages/accountSafe/accountSafe",
+            "style" : {
+				"navigationBarBackgroundColor": "#FFFFFF",
+				"navigationBarTextStyle": "black",
+				"titleNView": {
+					"backButton": {
+						"type": "back"
+					},
+					"titleText": "账号与安全"
+				}
+			}
+        }
+        ,{
+            "path" : "pages/changeAcount/changeAcount",
+            "style" : {
+				"navigationBarBackgroundColor": "#FFFFFF",
+				"navigationBarTextStyle": "black",
+				"titleNView": {
+					"backButton": {
+						"type": "back"
+					}
+				}
+			}
+        }
+        ,{
+            "path" : "pages/coinDetail/coinDetail",
+            "style" : {
+				"navigationBarBackgroundColor": "#131e31",
+				"navigationBarTextStyle": "white",
+				"titleNView": {
+					"backButton": {
+						"type": "back"
+					}
+				}
+			}
+        }
+    ],
+	"globalStyle": {
+		"navigationBarTextStyle": "white",
+		"navigationBarTitleText": "新闻资讯",
+		"navigationBarBackgroundColor": "#2F85FC",
+		"backgroundColor": "#FFFFFF",
+		"navigationStyle": "custom"
+	},
+	"tabBar": {
+		"color": "#333",
+		"selectedColor": "#333",
+		"borderStyle": "black",
+		"backgroundColor": "#ffffff",
+		"height": "50px",
+		"fontSize": "10px",
+		"iconWidth": "24px",
+		"spacing": "3px",
+		"list": [{
+			"pagePath":"pages/home/home",
+			"iconPath":"static/tabBar/home.png",
+			"selectedIconPath":"static/tabBar/home_curr.png",
+			"text":"首页"
+		},
+		{
+			"pagePath":"pages/news/index",
+			"iconPath":"static/tabBar/fastnews.png",
+			"selectedIconPath":"static/tabBar/fastnews_curr.png",
+			"text":"快讯"
+		},
+		{
+			"pagePath":"pages/quotations/quotations",
+			"iconPath":"static/tabBar/trade.png",
+			"selectedIconPath":"static/tabBar/trade_curr.png",
+			"text":"行情"
+		},
+		{
+			"pagePath":"pages/user/user",
+			"iconPath":"static/tabBar/mine.png",
+			"selectedIconPath":"static/tabBar/mine_curr.png",
+			"text":"我的"
+		}]
+	}
+}

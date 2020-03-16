@@ -1,0 +1,32 @@
+<template>
+	<view class="container">
+		<uni-live-list-item v-for="(item, index) in listData" :item="item" :key="index"></uni-live-list-item>
+	</view>
+</template>
+
+<script>
+	import {liveDetail} from '@/mock/data.js';
+	import uniLiveListItem from '@/components/uni-live-list-item.vue';
+	export default {
+		data() {
+			return {
+				
+			}
+		},
+		components:{
+				uniLiveListItem
+		},
+		onLoad() {
+			let tempArr = new Array(20);
+			tempArr.fill(liveDetail);
+			this.listData = tempArr;
+		},
+		methods: {
+			
+		}
+	}
+</script>
+
+<style>
+
+</style>

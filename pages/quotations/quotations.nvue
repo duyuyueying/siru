@@ -1,0 +1,125 @@
+<template>
+	<view class="wrap">
+		<tabs :tabs="['自选','大盘']" @changeTab="changeTab" :defaultTab="currTab"></tabs>
+		<view class="list_wrap" v-if="currTab == 0">
+			<uni-self-dish-table-head></uni-self-dish-table-head>
+			<uni-self-dish-table-cell v-for="(item, index) in coins" :key="index" :item="item" @click="goPage(item.name, item.exChange)"></uni-self-dish-table-cell>
+		</view>
+		<view class="list_wrap" v-if="currTab == 1">
+			<view class="progress_box">
+				<progress percent="80" :activeColor="upTheme.txt" stroke-width="8" :backgroundColor="downTheme.txt"/>
+				<view class="flex_row space_between">
+					<text class="normal_txt progress_txt" :style="{color:upTheme.txt}">涨 123 个币种</text>
+					<text class="normal_txt progress_txt" :style="{color:downTheme.txt}">跌 123 个币种</text>
+				</view>
+			</view>
+			<tabs :tabs="['市值榜','涨幅榜', '跌幅榜']" @changeTab="changeSubTab" :defaultTab="currSubTab"></tabs>
+			<uni-big-dish-table-head></uni-big-dish-table-head>
+			<uni-big-dish-table-cell v-for="(item, index) in coins" :key="index" :item="item" @click="goPage(item.name, '')"></uni-big-dish-table-cell>
+		</view>
+	</view>
+</template>
+
+<script>
+	import tabs from '@/components/tabs.vue';
+	import timeline from '@/components/timeline.vue';
+	import {oneNews, focusAuthor, tag, liveDetail, coins} from '@/mock/data.js';
+	import uniSelfDishTableHead from '@/pages/quotations/uni-self-dish-table-head.vue';
+	import uniSelfDishTableCell from '@/pages/quotations/uni-self-dish-table-cell.vue';
+	import uniBigDishTableHead from '@/pages/quotations/uni-big-dish-table-head.vue';
+	import uniBigDishTableCell from '@/pages/quotations/uni-big-dish-table-cell.vue';
+	import uniTitle from '@/components/uni-title.vue';
+	import newsItem from '@/pages/home/news-item.nvue';
+	import tagItem from '@/pages/home/tag_list_item.vue';
+	import personalItem from '@/pages/home/person-list-item.vue';
+	import liveItem from '@/components/uni-live-list-item.vue';
+	import exChangeItem from '@/components/uni-exchange-item.vue';
+	import {color} from '@/common/util.js';
+	export default {
+		data() {
+			return {
+				listData: [],
+				focusAuthor: focusAuthor,
+				tags: [tag, tag],
+				oneNews: oneNews,
+				liveDetail: liveDetail,
+				exChange: {
+					icon_url: 'xxx',
+					exRangk: 7,
+					name: 'BZ',
+					eosAndEth: '110',
+					sale: 2084.76,
+					totalPrice: 14800
+				},
+				currSubTab: 0,
+				coins: coins,
+				currTab: 1,
+				upTheme: null,
+				downTheme: null
+			}
+		},
+		mixins:[color],
+		components:{
+			tabs,
+			uniSelfDishTableHead,
+			uniSelfDishTableCell,
+			uniBigDishTableHead,
+			uniBigDishTableCell,
+			uniTitle,
+			newsItem,
+			tagItem,
+			personalItem,
+			liveItem,
+			exChangeItem
+		},
+		created() {
+			let tempArr = new Array(20);
+			tempArr.fill(oneNews);
+			this.listData = tempArr;
+			this.upTheme = this.color(1,2);
+			this.downTheme = this.color(2,1);
+			// this.downTheme();
+		},
+		methods: {
+			// 切换tab
+			changeTab(index) {
+				this.currTab = index;
+			},
+			// 切换subTab
+			changeSubTab(index) {
+				this.currSubTab = index
+			},
+			goPage(symbol, exChangeName) {
+				uni.navigateTo({
+					url: '/pages/coinDetail/coinDetail?symbol='+symbol+'&exChangeName='+exChangeName
+				});
+			}
+		},
+		computed:{
+		}
+	}
+</script>
+
+<style lang="scss">
+	.wrap{
+		margin-top: 80upx;
+	}
+	.progress_box{
+		margin-top: 18upx;
+		padding: 0 $space-lg;
+	}
+	.space_between{
+		justify-content: space-between;
+	}
+	.progress_txt{
+		line-height: 60upx;
+	}
+	// .list_item{
+	// 	padding: $space-lg;
+	// 	background-color: $whiteColor;
+	// 	border-style: solid;
+	// 	border-bottom-width: 2upx;
+	// 	border-bottom-color: $borderColor;
+	// }
+	
+</style>

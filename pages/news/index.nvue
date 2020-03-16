@@ -1,0 +1,33 @@
+<template>
+	<view>
+		<timeline type="fastNews" :items="listData">
+		</timeline>
+	</view>
+</template>
+
+<script>
+	import timeline from '@/components/timeline.vue';
+	import {oneNews} from '@/mock/data.js';
+	export default {
+		data() {
+			return {
+				listData: [],
+			}
+		},
+		components:{
+			timeline	
+		},
+		created() {
+			let tempArr = new Array(20);
+			tempArr.fill(oneNews);
+			this.listData = tempArr;
+		},
+		methods: {
+			
+		}
+	}
+</script>
+
+<style>
+
+</style>

@@ -1,0 +1,14 @@
+@font-face {
+  font-family: 'iconfont';  /* project id 1678195 */
+  src: url('https://at.alicdn.com/t/font_1678195_74mx587jeo4.woff') format('woff'),
+  url('https://at.alicdn.com/t/font_1678195_74mx587jeo4.ttf') format('truetype');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+

@@ -1,0 +1,30 @@
+{
+  "id": "1678195",
+  "name": "news",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "300708",
+      "name": "三角下",
+      "font_class": "triangle-bottom",
+      "unicode": "e62b",
+      "unicode_decimal": 58923
+    },
+    {
+      "icon_id": "314903",
+      "name": "三角上",
+      "font_class": "triangle-top",
+      "unicode": "e635",
+      "unicode_decimal": 58933
+    },
+    {
+      "icon_id": "903796",
+      "name": "火",
+      "font_class": "huo",
+      "unicode": "e664",
+      "unicode_decimal": 58980
+    }
+  ]
+}
